@@ -4,21 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Digital Centrex · Cualificación de Implantación</title>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
-
-  :root {
-    --orange:#FF6B00;--orange-light:#FF8C33;--orange-dim:rgba(255,107,0,0.10);
-    --dark:#0F0F0F;--mid:#1C1C1E;--surface:#242426;--surface2:#2E2E30;
-    --border:rgba(255,255,255,0.08);--text:#F2F2F2;--muted:#888;
-    --green:#2ECC71;--yellow:#F0C040;--red:#E74C3C;--red-block:#FF2D55;
-    --blue:#4A90E2;
-  }
+  :root{--orange:#FF6B00;--orange-light:#FF8C33;--orange-dim:rgba(255,107,0,0.10);--dark:#0F0F0F;--mid:#1C1C1E;--surface:#242426;--surface2:#2E2E30;--border:rgba(255,255,255,0.08);--text:#F2F2F2;--muted:#888;--green:#2ECC71;--yellow:#F0C040;--red:#E74C3C;--red-block:#FF2D55;}
   *{margin:0;padding:0;box-sizing:border-box;}
   body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;}
   body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,107,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,0,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
-
-  /* ── SCREENS ── */
   .screen{display:none;position:relative;z-index:1;}
   .screen.active{display:block;}
 
@@ -26,7 +18,7 @@
   #loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
   #loginScreen.active{display:flex;}
   .login-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:40px 36px;width:100%;max-width:400px;}
-  .login-logo{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);margin-bottom:6px;}
+  .login-logo{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:6px;}
   .login-logo em{color:var(--orange);font-style:italic;}
   .login-sub{font-size:13px;color:var(--muted);margin-bottom:28px;}
   .field{margin-bottom:16px;}
@@ -37,22 +29,19 @@
   .btn-primary:hover{background:var(--orange-light);}
   .login-err{color:var(--red-block);font-size:12px;margin-top:10px;display:none;}
   .login-switch{text-align:center;margin-top:18px;font-size:12px;color:var(--muted);}
-  .login-switch a{color:var(--orange);cursor:pointer;text-decoration:none;}
+  .login-switch a{color:var(--orange);cursor:pointer;}
 
-  /* ── CONTAINER ── */
+  /* ── LAYOUT ── */
   .container{max-width:780px;margin:0 auto;padding:40px 24px 80px;position:relative;z-index:1;}
-
-  /* ── HEADER ── */
   .badge{display:inline-block;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--orange);border:1px solid var(--orange);padding:4px 12px;border-radius:2px;margin-bottom:20px;}
   h1{font-family:'DM Serif Display',serif;font-size:clamp(26px,5vw,40px);line-height:1.15;margin-bottom:10px;}
   h1 em{color:var(--orange);font-style:italic;}
   .subtitle{color:var(--muted);font-size:14px;line-height:1.6;max-width:520px;margin-bottom:32px;}
 
-  /* ── CLIENT INFO BAR ── */
+  /* ── CLIENT BAR ── */
   .client-bar{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 20px;margin-bottom:32px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
   .client-bar span{font-size:13px;color:var(--muted);}
   .client-bar strong{color:var(--text);font-weight:500;}
-  .client-bar .sep{color:var(--border);font-size:18px;}
   .logout-btn{margin-left:auto;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:12px;padding:5px 12px;border-radius:4px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
   .logout-btn:hover{border-color:var(--muted);color:var(--text);}
 
@@ -62,7 +51,7 @@
   .progress-fill{height:100%;background:var(--orange);border-radius:2px;transition:width .4s ease;width:0%;}
   .progress-label{font-size:12px;color:var(--muted);white-space:nowrap;min-width:60px;text-align:right;}
 
-  /* ── SECTIONS / QUESTIONS ── */
+  /* ── QUESTIONS ── */
   .section{margin-bottom:36px;}
   .section-title{font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--orange);margin-bottom:18px;display:flex;align-items:center;gap:10px;}
   .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
@@ -71,7 +60,7 @@
   .q-card.answered{border-color:rgba(255,107,0,0.35);}
   .q-card.blocker{border-left:3px solid var(--red-block);}
   .q-label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
-  .q-text{font-size:14px;font-weight:400;line-height:1.55;color:var(--text);margin-bottom:13px;}
+  .q-text{font-size:14px;line-height:1.55;color:var(--text);margin-bottom:13px;}
   .q-hint{font-size:12px;color:var(--muted);margin-bottom:12px;font-style:italic;}
   .options{display:flex;flex-wrap:wrap;gap:7px;}
   .opt{padding:7px 14px;border:1px solid var(--border);border-radius:4px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .15s;background:transparent;user-select:none;}
@@ -92,7 +81,7 @@
   /* ── RESULT ── */
   #result{display:none;margin-top:44px;animation:fadeUp .5s ease;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
-  .result-hero{border-radius:10px;padding:32px;margin-bottom:24px;position:relative;}
+  .result-hero{border-radius:10px;padding:32px;margin-bottom:24px;}
   .result-hero.verde{background:linear-gradient(135deg,#0d2e1c,#143d26);border:1px solid rgba(46,204,113,0.22);}
   .result-hero.amarillo{background:linear-gradient(135deg,#2b2408,#3a3010);border:1px solid rgba(240,192,64,0.22);}
   .result-hero.rojo{background:linear-gradient(135deg,#2b1212,#3a1a1a);border:1px solid rgba(231,76,60,0.22);}
@@ -114,7 +103,7 @@
   .detail-block{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px 18px;}
   .detail-block h3{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
   .detail-block ul{list-style:none;}
-  .detail-block ul li{font-size:13px;color:var(--text);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:7px;}
+  .detail-block ul li{font-size:13px;color:var(--text);line-height:1.5;padding:4px 0;border-bottom:1px solid var(--border);display:flex;gap:7px;}
   .detail-block ul li:last-child{border-bottom:none;}
   .blockers-box{background:rgba(255,45,85,0.07);border:1px solid rgba(255,45,85,0.35);border-radius:8px;padding:18px 22px;margin-bottom:24px;}
   .blockers-box h3{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red-block);margin-bottom:12px;}
@@ -126,14 +115,28 @@
   .action-section h3::after{content:'';flex:1;height:1px;background:var(--border);}
   .action-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:9px;display:flex;gap:14px;align-items:flex-start;}
   .action-num{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--orange-dim);border:1px solid var(--orange);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--orange);}
-  .action-body{flex:1;}
   .action-body strong{display:block;font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;}
   .action-body p{font-size:12px;color:var(--muted);line-height:1.55;}
-  .save-confirm{background:rgba(46,204,113,0.10);border:1px solid rgba(46,204,113,0.3);border-radius:6px;padding:12px 18px;font-size:13px;color:var(--green);margin-bottom:20px;display:none;}
+  .save-confirm{background:rgba(46,204,113,0.10);border:1px solid rgba(46,204,113,0.3);border-radius:6px;padding:12px 18px;font-size:13px;color:var(--green);margin-bottom:20px;}
   .restart-btn{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;padding:9px 22px;border-radius:4px;cursor:pointer;transition:all .2s;display:block;margin:28px auto 0;}
   .restart-btn:hover{border-color:var(--muted);color:var(--text);}
 
-  /* ── ADMIN PANEL ── */
+  /* ── EMAIL BOX ── */
+  .email-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px 22px;margin-bottom:24px;}
+  .email-box h3{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+  .email-box h3::after{content:'';flex:1;height:1px;background:var(--border);}
+  .email-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .email-input{flex:1;min-width:200px;background:var(--mid);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+  .email-input:focus{border-color:var(--orange);}
+  .email-btn{background:var(--orange);color:#fff;border:none;border-radius:6px;padding:10px 20px;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+  .email-btn:hover{background:var(--orange-light);}
+  .email-btn:disabled{opacity:0.45;cursor:not-allowed;}
+  .email-status{font-size:12px;margin-top:10px;display:none;}
+  .email-status.ok{color:var(--green);}
+  .email-status.err{color:var(--red-block);}
+  .email-status.sending{color:var(--muted);}
+
+  /* ── ADMIN ── */
   #adminScreen .container{max-width:960px;}
   .admin-header{display:flex;align-items:center;gap:16px;margin-bottom:36px;flex-wrap:wrap;}
   .admin-header h1{font-size:28px;margin-bottom:0;}
@@ -159,17 +162,13 @@
   .no-entries{text-align:center;color:var(--muted);padding:40px;font-size:14px;}
 
   /* ── MODAL ── */
-  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:100;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;}
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:100;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto;}
   .modal-overlay.open{display:flex;}
-  .modal-box{background:var(--mid);border:1px solid var(--border);border-radius:12px;width:100%;max-width:740px;padding:36px;position:relative;margin:auto;}
-  .modal-close{position:absolute;top:18px;right:18px;background:transparent;border:none;color:var(--muted);font-size:22px;cursor:pointer;line-height:1;}
+  .modal-box{background:var(--mid);border:1px solid var(--border);border-radius:12px;width:100%;max-width:760px;padding:36px;position:relative;margin:auto;}
+  .modal-close{position:absolute;top:18px;right:18px;background:transparent;border:none;color:var(--muted);font-size:24px;cursor:pointer;line-height:1;}
   .modal-close:hover{color:var(--text);}
-  .modal-client-info{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border);}
-  .modal-client-info div{font-size:13px;}
-  .modal-client-info .lbl{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
-  .modal-client-info .val{color:var(--text);font-weight:500;}
-  .answers-list{list-style:none;margin-top:16px;}
-  .answers-list li{padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;display:flex;gap:12px;}
+  .answers-list{list-style:none;margin-top:12px;}
+  .answers-list li{padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;display:flex;gap:12px;}
   .answers-list li:last-child{border-bottom:none;}
   .answers-list .q{color:var(--muted);flex:1;}
   .answers-list .a{color:var(--text);font-weight:500;flex:1;text-align:right;}
@@ -177,41 +176,22 @@
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════════
-     SCREEN 1: LOGIN
-══════════════════════════════════════════════ -->
+<!-- LOGIN -->
 <div id="loginScreen" class="screen active">
   <div class="login-box">
     <div class="login-logo">Digital <em>Centrex</em></div>
     <div class="login-sub">Cualificación de Implantación</div>
-
     <div id="clientLoginForm">
-      <div class="field">
-        <label>CIF Empresa</label>
-        <input type="text" id="loginCIF" placeholder="B12345678" autocomplete="off">
-      </div>
-      <div class="field">
-        <label>Nombre de Empresa</label>
-        <input type="text" id="loginEmpresa" placeholder="Nombre de la empresa">
-      </div>
-      <div class="field">
-        <label>Contraseña de Acceso</label>
-        <input type="password" id="loginPass" placeholder="••••••••">
-      </div>
+      <div class="field"><label>CIF Empresa</label><input type="text" id="loginCIF" placeholder="B12345678" autocomplete="off"></div>
+      <div class="field"><label>Nombre de Empresa</label><input type="text" id="loginEmpresa" placeholder="Nombre de la empresa"></div>
+      <div class="field"><label>Contraseña de Acceso</label><input type="password" id="loginPass" placeholder="••••••••"></div>
       <button class="btn-primary" onclick="doClientLogin()">Acceder al cuestionario →</button>
       <div class="login-err" id="clientErr">Contraseña incorrecta. Contacte con su asesor Orange.</div>
       <div class="login-switch">¿Eres administrador? <a onclick="toggleAdminLogin()">Acceder como admin</a></div>
     </div>
-
     <div id="adminLoginForm" style="display:none;">
-      <div class="field">
-        <label>Usuario administrador</label>
-        <input type="text" id="adminUser" placeholder="admin" autocomplete="off">
-      </div>
-      <div class="field">
-        <label>Contraseña admin</label>
-        <input type="password" id="adminPass" placeholder="••••••••">
-      </div>
+      <div class="field"><label>Usuario administrador</label><input type="text" id="adminUser" placeholder="admin" autocomplete="off"></div>
+      <div class="field"><label>Contraseña admin</label><input type="password" id="adminPass" placeholder="••••••••"></div>
       <button class="btn-primary" onclick="doAdminLogin()">Entrar al panel →</button>
       <div class="login-err" id="adminErr">Credenciales incorrectas.</div>
       <div class="login-switch"><a onclick="toggleAdminLogin()">← Volver al acceso de cliente</a></div>
@@ -219,9 +199,7 @@
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     SCREEN 2: QUESTIONNAIRE
-══════════════════════════════════════════════ -->
+<!-- QUESTIONNAIRE -->
 <div id="questionnaireScreen" class="screen">
   <div class="container">
     <header>
@@ -229,33 +207,26 @@
       <h1>Cualificación de<br><em>Implantación</em></h1>
       <p class="subtitle">Responde las 25 preguntas para obtener el scoring de dificultad y la guía de actuación personalizada.</p>
     </header>
-
-    <div class="client-bar" id="clientBar">
+    <div class="client-bar">
       <span>CIF: <strong id="barCIF">—</strong></span>
-      <span class="sep">|</span>
+      <span style="color:var(--border);font-size:18px">|</span>
       <span>Empresa: <strong id="barEmpresa">—</strong></span>
       <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
     </div>
-
     <div class="progress-bar-wrap">
       <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
       <div class="progress-label" id="progressLabel">0 / 25</div>
     </div>
-
     <div id="questionnaire"></div>
-
     <div class="cta-wrap">
       <button class="cta" onclick="calcular()">Calcular scoring y guardar informe</button>
       <div class="incomplete-msg" id="incompleteMsg">⚠ Hay preguntas sin responder. Los resultados pueden ser parciales.</div>
     </div>
-
     <div id="result"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     SCREEN 3: ADMIN PANEL
-══════════════════════════════════════════════ -->
+<!-- ADMIN -->
 <div id="adminScreen" class="screen">
   <div class="container">
     <div class="admin-header">
@@ -265,31 +236,17 @@
       </div>
       <button class="logout-btn" style="margin-left:auto;" onclick="logout()">Cerrar sesión</button>
     </div>
-
     <div class="admin-stats" id="adminStats"></div>
-
     <input class="search-bar" id="searchBar" placeholder="Buscar por CIF, empresa o fecha..." oninput="renderTable()">
-
     <table class="entries-table">
-      <thead>
-        <tr>
-          <th>Empresa</th>
-          <th>CIF</th>
-          <th>Fecha</th>
-          <th>Scoring</th>
-          <th>Clasificación</th>
-          <th></th>
-        </tr>
-      </thead>
+      <thead><tr><th>Empresa</th><th>CIF</th><th>Fecha</th><th>Scoring</th><th>Clasificación</th><th></th></tr></thead>
       <tbody id="entriesBody"></tbody>
     </table>
     <div class="no-entries" id="noEntries" style="display:none;">No hay cuestionarios guardados todavía.</div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     MODAL: DETALLE DE CUESTIONARIO
-══════════════════════════════════════════════ -->
+<!-- MODAL DETALLE -->
 <div class="modal-overlay" id="detailModal">
   <div class="modal-box" id="detailContent">
     <button class="modal-close" onclick="closeModal()">×</button>
@@ -297,23 +254,28 @@
 </div>
 
 <script>
-/* ═══════════════════════════════════════════════
-   CONFIGURACIÓN — ajusta estas contraseñas
-═══════════════════════════════════════════════ */
-const CLIENT_PASSWORD = "centrex2025";
-const ADMIN_USER      = "admin";
-const ADMIN_PASSWORD  = "admin2025";
-const STORAGE_KEY     = "dcx_entries_v1";
+/* ═══════════════════════════════════
+   EMAILJS CONFIG
+═══════════════════════════════════ */
+const EJS_SERVICE  = 'service_gd60vfm';
+const EJS_TEMPLATE = 'template_rhg3zae';
+const EJS_PUBKEY   = 'bH-30EjRjQueXOxu6';
+emailjs.init(EJS_PUBKEY);
 
-/* ═══════════════════════════════════════════════
-   ESTADO
-═══════════════════════════════════════════════ */
-let currentUser = null;   // { type:'client'|'admin', cif, empresa }
+/* ═══════════════════════════════════
+   APP CONFIG
+═══════════════════════════════════ */
+const CLIENT_PASSWORD = 'centrex2025';
+const ADMIN_USER      = 'admin';
+const ADMIN_PASSWORD  = 'admin2025';
+const STORAGE_KEY     = 'dcx_entries_v1';
+
+let currentUser = null;
 let respuestas  = {};
 
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════
    PREGUNTAS
-═══════════════════════════════════════════════ */
+═══════════════════════════════════ */
 const preguntas = [
   {id:'q1',bloque:'Red de Acceso (WAN)',texto:'¿De qué tipo de acceso a Internet dispone el cliente?',hint:'El tipo de acceso determina el número máximo de puestos fijos soportados.',opciones:[{label:'FTTH asimétrica (ej. 300M/30M)',peso:20,risk:'high',flag:'acceso_asimetrico'},{label:'FTTH simétrica (400M+ simétrico)',peso:5,risk:'low'},{label:'Acceso dedicado con SLA 100%',peso:0,risk:'low'},{label:'Solo 4G / sin fibra fija',peso:100,risk:'block',flag:'acceso_4g',blocker:true},{label:'No lo sabe / por confirmar',peso:30,risk:'med',flag:'acceso_desconocido'}]},
   {id:'q2',bloque:'Red de Acceso (WAN)',texto:'¿Cuántos puestos fijos IP estima que necesitará el cliente?',hint:'Con FTTH asimétrica el límite es ~9 puestos. Con simétricas, 141+.',opciones:[{label:'Menos de 10',peso:0,risk:'low'},{label:'Entre 10 y 50',peso:10,risk:'low'},{label:'Entre 50 y 150',peso:15,risk:'med',flag:'volumen_alto'},{label:'Más de 150',peso:25,risk:'high',flag:'volumen_muy_alto'}]},
@@ -325,82 +287,71 @@ const preguntas = [
   {id:'q8',bloque:'Red LAN Interna',texto:'¿Tiene el cliente soporte técnico propio para la administración de su LAN?',hint:'Sin IT propio, la configuración de switches, VLANs y firewall depende de terceros.',opciones:[{label:'Sí, tiene IT interno capacitado',peso:0,risk:'low'},{label:'IT interno con capacidad limitada',peso:15,risk:'med',flag:'it_limitado'},{label:'No tiene IT propio, gestiona con empresa externa',peso:20,risk:'med',flag:'it_externo'},{label:'No tiene soporte técnico de ningún tipo',peso:35,risk:'high',flag:'sin_it'}]},
   {id:'q9',bloque:'Red LAN Interna',texto:'¿Dispone el cliente de firewall perimetral?',hint:'Los firewalls con SIP ALG activo o puertos VoIP bloqueados son causa frecuente de incidencias.',opciones:[{label:'Sí, con SIP ALG desactivado y puertos VoIP abiertos',peso:0,risk:'low'},{label:'Sí, pero no ha revisado configuración VoIP',peso:25,risk:'high',flag:'firewall_sin_revisar'},{label:'Sí, con políticas muy restrictivas (banca, seguros, AAPP)',peso:40,risk:'high',flag:'firewall_restrictivo'},{label:'No tiene firewall',peso:5,risk:'low'},{label:'No lo sabe',peso:20,risk:'med'}]},
   {id:'q10',bloque:'Infraestructura y Terminales',texto:'¿Tiene el cliente una centralita PBX/IP existente que quiere mantener o migrar?',hint:'La migración desde PBX legacy puede implicar funcionalidades propietarias sin equivalente en Centrex.',opciones:[{label:'No, implantación desde cero',peso:0,risk:'low'},{label:'Sí, tiene PBX analógica/digital legacy',peso:30,risk:'high',flag:'pbx_legacy'},{label:'Sí, tiene PBX IP de otro fabricante',peso:20,risk:'med',flag:'pbx_ip'},{label:'Sí, requiere coexistencia con su PBX actual',peso:45,risk:'high',flag:'coexistencia_pbx'}]},
-  {id:'q11',bloque:'Infraestructura y Terminales',texto:'¿El cliente necesita conservar aparatos de FAX analógicos?',hint:'Los faxes requieren adaptador ATA Cisco SPA191 (único homologado). Fax virtual y analógico no pueden compartir numeración.',opciones:[{label:'No usa fax',peso:0,risk:'low'},{label:'Sí, usará el adaptador ATA homologado de Orange',peso:10,risk:'low'},{label:'Sí, quiere usar sus propios faxes / otros adaptadores',peso:40,risk:'high',flag:'fax_no_homologado'},{label:'Necesita fax virtual y analógico en el mismo número',peso:80,risk:'block',flag:'fax_conflicto',blocker:true}]},
-  {id:'q12',bloque:'Infraestructura y Terminales',texto:'¿Tiene el cliente terminales inalámbricos DECT en grandes superficies (naves, almacenes)?',hint:'Cobertura máxima DECT: 50m interior / 300m exterior. Sin handover entre áreas de antena.',opciones:[{label:'No necesita DECT',peso:0,risk:'low'},{label:'Sí, en oficina estándar (<50m)',peso:5,risk:'low'},{label:'Sí, en nave/almacén grande (>50m)',peso:30,risk:'high',flag:'dect_gran_superficie'},{label:'Necesita handover de llamadas entre zonas DECT',peso:60,risk:'block',flag:'dect_handover',blocker:true}]},
+  {id:'q11',bloque:'Infraestructura y Terminales',texto:'¿El cliente necesita conservar aparatos de FAX analógicos?',hint:'Faxes requieren adaptador ATA Cisco SPA191 (único homologado). Fax virtual y analógico no pueden compartir numeración.',opciones:[{label:'No usa fax',peso:0,risk:'low'},{label:'Sí, usará el adaptador ATA homologado de Orange',peso:10,risk:'low'},{label:'Sí, quiere usar sus propios faxes / otros adaptadores',peso:40,risk:'high',flag:'fax_no_homologado'},{label:'Necesita fax virtual y analógico en el mismo número',peso:80,risk:'block',flag:'fax_conflicto',blocker:true}]},
+  {id:'q12',bloque:'Infraestructura y Terminales',texto:'¿Tiene el cliente terminales inalámbricos DECT en grandes superficies (naves, almacenes)?',hint:'Cobertura máxima DECT: 50m interior / 300m exterior. Sin handover entre áreas.',opciones:[{label:'No necesita DECT',peso:0,risk:'low'},{label:'Sí, en oficina estándar (<50m)',peso:5,risk:'low'},{label:'Sí, en nave/almacén grande (>50m)',peso:30,risk:'high',flag:'dect_gran_superficie'},{label:'Necesita handover de llamadas entre zonas DECT',peso:60,risk:'block',flag:'dect_handover',blocker:true}]},
   {id:'q13',bloque:'Servicios y Funcionalidades',texto:'¿El cliente necesita un Contact Center o solución ACD avanzada?',hint:'El ACD estándar soporta hasta 25 llamadas en cola. Un Contact Center completo requiere oferta técnica personalizada.',opciones:[{label:'No necesita Contact Center',peso:0,risk:'low'},{label:'Solo ACD básico (cola de llamadas estándar)',peso:5,risk:'low'},{label:'Contact Center con funcionalidades avanzadas',peso:70,risk:'block',flag:'contact_center',blocker:true}]},
   {id:'q14',bloque:'Servicios y Funcionalidades',texto:'¿El cliente requiere integración con CRM, ERP u otras plataformas (Salesforce, SAP, etc.)?',hint:'Digital Centrex no admite integraciones con sistemas externos de forma estándar.',opciones:[{label:'No necesita integración con sistemas externos',peso:0,risk:'low'},{label:'Sería deseable pero no es imprescindible',peso:15,risk:'med',flag:'integracion_deseable'},{label:'Es imprescindible la integración CTI',peso:75,risk:'block',flag:'integracion_critica',blocker:true}]},
   {id:'q15',bloque:'Servicios y Funcionalidades',texto:'¿El cliente usa o necesita integración con Microsoft Teams / Microsoft 365?',hint:'Digital Centrex no tiene integración estándar con O365/Teams.',opciones:[{label:'No usa Teams ni O365',peso:0,risk:'low'},{label:'Usa Teams solo para mensajería/vídeo interno',peso:10,risk:'low'},{label:'Quiere integrar la telefonía de Centrex con Teams',peso:60,risk:'block',flag:'teams_integracion',blocker:true},{label:'Usa O365 pero sin integración telefónica requerida',peso:5,risk:'low'}]},
   {id:'q16',bloque:'Servicios y Funcionalidades',texto:'¿Necesita el cliente conectar su propia centralita IP mediante SIP Trunk?',hint:'El SIP Trunk para centralitas propias requiere oferta técnica personalizada.',opciones:[{label:'No, prescinde de su centralita propia',peso:0,risk:'low'},{label:'Necesita SIP Trunk para su centralita IP propia',peso:70,risk:'block',flag:'sip_trunk',blocker:true},{label:'Tiene centralita propia pero dispuesto a prescindir de ella',peso:20,risk:'med',flag:'centralita_propia_opcional'}]},
   {id:'q17',bloque:'Servicios y Funcionalidades',texto:'¿El cliente necesita IVR con lógica compleja (>9 opciones por nivel, códigos postales, etc.)?',hint:'La IVR estándar solo permite dígitos 0–9, * y #. Sin lógica condicional avanzada.',opciones:[{label:'No necesita IVR o árbol sencillo',peso:0,risk:'low'},{label:'IVR estándar (hasta 5 menús, 9 opciones)',peso:5,risk:'low'},{label:'IVR avanzada con lógica compleja o códigos postales',peso:50,risk:'high',flag:'ivr_compleja'},{label:'No necesita IVR, solo números de cabecera',peso:0,risk:'low'}]},
-  {id:'q18',bloque:'Portabilidad y Numeración',texto:'¿El cliente necesita portar numeración desde otro operador?',hint:'La portabilidad añade dependencia de plazos externos y puede retrasar la implantación.',opciones:[{label:'No, es numeración nueva',peso:0,risk:'low'},{label:'Sí, porta desde otro operador (pocos números)',peso:10,risk:'low'},{label:'Sí, porta gran volumen de numeración',peso:20,risk:'med',flag:'portabilidad_masiva'},{label:'Sí, incluye numeración 900/800 o especial',peso:30,risk:'high',flag:'numeracion_especial'}]},
+  {id:'q18',bloque:'Portabilidad y Numeración',texto:'¿El cliente necesita portar numeración desde otro operador?',hint:'La portabilidad añade dependencia de plazos externos.',opciones:[{label:'No, es numeración nueva',peso:0,risk:'low'},{label:'Sí, porta desde otro operador (pocos números)',peso:10,risk:'low'},{label:'Sí, porta gran volumen de numeración',peso:20,risk:'med',flag:'portabilidad_masiva'},{label:'Sí, incluye numeración 900/800 o especial',peso:30,risk:'high',flag:'numeracion_especial'}]},
   {id:'q19',bloque:'Portabilidad y Numeración',texto:'¿El cliente necesita mantener su plan de extensiones cortas existente?',opciones:[{label:'No tiene plan de numeración corta previo',peso:0,risk:'low'},{label:'Sí, mantiene su plan de numeración corta actual',peso:5,risk:'low'},{label:'Quiere cambiar el plan de extensiones completamente',peso:15,risk:'med',flag:'cambio_numeracion'}]},
-  {id:'q20',bloque:'Geografía y Sedes',texto:'¿Cuántas sedes tiene el cliente?',hint:'Cada sede con terminales fijos requiere un acceso fijo Orange y validación LAN independiente.',opciones:[{label:'1 sede',peso:0,risk:'low'},{label:'2 a 5 sedes',peso:10,risk:'low'},{label:'6 a 15 sedes',peso:20,risk:'med',flag:'multisede'},{label:'Más de 15 sedes',peso:35,risk:'high',flag:'gran_multisede'}]},
+  {id:'q20',bloque:'Geografía y Sedes',texto:'¿Cuántas sedes tiene el cliente?',hint:'Cada sede con terminales fijos requiere acceso fijo Orange y validación LAN independiente.',opciones:[{label:'1 sede',peso:0,risk:'low'},{label:'2 a 5 sedes',peso:10,risk:'low'},{label:'6 a 15 sedes',peso:20,risk:'med',flag:'multisede'},{label:'Más de 15 sedes',peso:35,risk:'high',flag:'gran_multisede'}]},
   {id:'q21',bloque:'Geografía y Sedes',texto:'¿Tiene el cliente sedes fuera de España?',hint:'Los puestos fijos IP solo son contratables en sedes de España con acceso fijo Orange.',opciones:[{label:'No, todas las sedes en España',peso:0,risk:'low'},{label:'Sí, sedes en el extranjero que también necesitan telefonía',peso:30,risk:'high',flag:'sedes_extranjero'},{label:'Sí, pero sedes extranjeras solo usarán puestos móviles/app',peso:5,risk:'low'}]},
   {id:'q22',bloque:'Situación Comercial',texto:'¿El cliente es actualmente cliente de Orange en servicios de voz o datos?',opciones:[{label:'Sí, cliente Orange en voz y/o datos',peso:0,risk:'low'},{label:'Parcialmente (algunos servicios con Orange)',peso:5,risk:'low'},{label:'No, cliente de otro operador (migración total)',peso:15,risk:'med',flag:'migracion_total'}]},
-  {id:'q23',bloque:'Situación Comercial',texto:'¿Cuál es el plazo comprometido con el cliente para la puesta en marcha?',hint:'SLA estándar: 12 días para puestos fijos (desde instalación acceso), 5 días para móviles.',opciones:[{label:'Flexible / sin urgencia especial',peso:0,risk:'low'},{label:'En 30–60 días',peso:10,risk:'low'},{label:'En menos de 30 días',peso:25,risk:'high',flag:'plazo_urgente'},{label:'Urgente (<15 días)',peso:45,risk:'high',flag:'plazo_critico'}]},
-  {id:'q24',bloque:'Situación Comercial',texto:'¿El cliente está en un sector con requisitos regulatorios estrictos?',hint:'Banca, AAPP, sanidad y seguros suelen tener firewalls y políticas que complican la implantación.',opciones:[{label:'No, sector sin restricciones especiales',peso:0,risk:'low'},{label:'Sector con cierta regulación (retail, educación)',peso:10,risk:'med'},{label:'Sector altamente regulado (banca, AAPP, sanidad, seguros)',peso:30,risk:'high',flag:'sector_regulado'}]},
+  {id:'q23',bloque:'Situación Comercial',texto:'¿Cuál es el plazo comprometido con el cliente para la puesta en marcha?',hint:'SLA estándar: 12 días para puestos fijos, 5 días para móviles.',opciones:[{label:'Flexible / sin urgencia especial',peso:0,risk:'low'},{label:'En 30–60 días',peso:10,risk:'low'},{label:'En menos de 30 días',peso:25,risk:'high',flag:'plazo_urgente'},{label:'Urgente (<15 días)',peso:45,risk:'high',flag:'plazo_critico'}]},
+  {id:'q24',bloque:'Situación Comercial',texto:'¿El cliente está en un sector con requisitos regulatorios estrictos?',hint:'Banca, AAPP, sanidad y seguros suelen tener políticas que complican la implantación.',opciones:[{label:'No, sector sin restricciones especiales',peso:0,risk:'low'},{label:'Sector con cierta regulación (retail, educación)',peso:10,risk:'med'},{label:'Sector altamente regulado (banca, AAPP, sanidad, seguros)',peso:30,risk:'high',flag:'sector_regulado'}]},
   {id:'q25',bloque:'Situación Comercial',texto:'¿El cliente tiene autonomía para tomar decisiones técnicas o requiere procesos de aprobación largos?',opciones:[{label:'Decisión ágil, interlocutor técnico directo',peso:0,risk:'low'},{label:'Proceso de aprobación moderado (2–4 semanas)',peso:15,risk:'med',flag:'decision_lenta'},{label:'Comité de aprobación / proceso muy largo (>1 mes)',peso:30,risk:'high',flag:'decision_muy_lenta'}]}
 ];
 
-/* ═══════════════════════════════════════════════
-   STORAGE HELPERS
-═══════════════════════════════════════════════ */
-function loadEntries(){
-  try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); }catch(e){ return []; }
-}
+/* ═══════════════════════════════════
+   STORAGE
+═══════════════════════════════════ */
+function loadEntries(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); }catch(e){ return []; } }
 function saveEntry(entry){
-  const entries = loadEntries();
-  const existing = entries.findIndex(e=>e.cif===entry.cif);
-  if(existing>=0){ entries[existing]=entry; }else{ entries.push(entry); }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  const entries=loadEntries();
+  const idx=entries.findIndex(e=>e.cif===entry.cif);
+  if(idx>=0) entries[idx]=entry; else entries.push(entry);
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(entries));
 }
-function deleteEntry(cif){
-  const entries = loadEntries().filter(e=>e.cif!==cif);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-}
+function deleteEntry(cif){ localStorage.setItem(STORAGE_KEY,JSON.stringify(loadEntries().filter(e=>e.cif!==cif))); }
 
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════
    AUTH
-═══════════════════════════════════════════════ */
+═══════════════════════════════════ */
 function toggleAdminLogin(){
-  const cf = document.getElementById('clientLoginForm');
-  const af = document.getElementById('adminLoginForm');
+  const cf=document.getElementById('clientLoginForm'), af=document.getElementById('adminLoginForm');
   if(cf.style.display==='none'){ cf.style.display=''; af.style.display='none'; }
   else{ cf.style.display='none'; af.style.display=''; }
 }
 function doClientLogin(){
-  const cif    = document.getElementById('loginCIF').value.trim();
-  const emp    = document.getElementById('loginEmpresa').value.trim();
-  const pass   = document.getElementById('loginPass').value;
-  const err    = document.getElementById('clientErr');
-  if(pass !== CLIENT_PASSWORD){ err.style.display='block'; return; }
+  const cif=document.getElementById('loginCIF').value.trim();
+  const emp=document.getElementById('loginEmpresa').value.trim();
+  const pass=document.getElementById('loginPass').value;
+  const err=document.getElementById('clientErr');
+  if(pass!==CLIENT_PASSWORD){ err.textContent='Contraseña incorrecta. Contacte con su asesor Orange.'; err.style.display='block'; return; }
   if(!cif||!emp){ err.textContent='Introduce el CIF y el nombre de empresa.'; err.style.display='block'; return; }
   err.style.display='none';
-  currentUser = { type:'client', cif, empresa:emp };
+  currentUser={type:'client',cif,empresa:emp};
+  document.getElementById('barCIF').textContent=cif;
+  document.getElementById('barEmpresa').textContent=emp;
+  respuestas={};
+  renderQ(); updateProgress();
   showScreen('questionnaireScreen');
-  document.getElementById('barCIF').textContent    = cif;
-  document.getElementById('barEmpresa').textContent = emp;
-  respuestas = {};
-  renderQ();
-  updateProgress();
 }
 function doAdminLogin(){
-  const u = document.getElementById('adminUser').value.trim();
-  const p = document.getElementById('adminPass').value;
-  const err = document.getElementById('adminErr');
-  if(u!==ADMIN_USER || p!==ADMIN_PASSWORD){ err.style.display='block'; return; }
+  const u=document.getElementById('adminUser').value.trim();
+  const p=document.getElementById('adminPass').value;
+  const err=document.getElementById('adminErr');
+  if(u!==ADMIN_USER||p!==ADMIN_PASSWORD){ err.style.display='block'; return; }
   err.style.display='none';
-  currentUser = { type:'admin' };
+  currentUser={type:'admin'};
   showScreen('adminScreen');
   renderAdmin();
 }
 function logout(){
   currentUser=null; respuestas={};
-  document.getElementById('loginCIF').value='';
-  document.getElementById('loginEmpresa').value='';
-  document.getElementById('loginPass').value='';
-  document.getElementById('adminUser').value='';
-  document.getElementById('adminPass').value='';
+  ['loginCIF','loginEmpresa','loginPass','adminUser','adminPass'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('questionnaire').innerHTML='';
   document.getElementById('result').style.display='none';
   showScreen('loginScreen');
@@ -410,225 +361,253 @@ function showScreen(id){
   document.getElementById(id).classList.add('active');
 }
 
-/* ═══════════════════════════════════════════════
-   RENDER QUESTIONNAIRE
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════
+   RENDER QUESTIONS
+═══════════════════════════════════ */
 function renderQ(){
-  const wrap = document.getElementById('questionnaire');
-  wrap.innerHTML='';
-  const bloques = [...new Set(preguntas.map(q=>q.bloque))];
+  const wrap=document.getElementById('questionnaire'); wrap.innerHTML='';
+  const bloques=[...new Set(preguntas.map(q=>q.bloque))];
   bloques.forEach(bloque=>{
-    const section = document.createElement('div'); section.className='section';
-    section.innerHTML=`<div class="section-title">${bloque}</div>`;
+    const sec=document.createElement('div'); sec.className='section';
+    sec.innerHTML=`<div class="section-title">${bloque}</div>`;
     preguntas.filter(q=>q.bloque===bloque).forEach(q=>{
-      const card = document.createElement('div');
+      const card=document.createElement('div');
       card.className='q-card'+(q.opciones.some(o=>o.blocker)?' blocker':'');
       card.id='card_'+q.id;
-      const bt = q.opciones.some(o=>o.blocker)?'<span class="blocker-tag">Potencial bloqueante</span>':'';
+      const bt=q.opciones.some(o=>o.blocker)?'<span class="blocker-tag">Potencial bloqueante</span>':'';
       card.innerHTML=`<div class="q-label">${q.bloque} ${bt}</div>
         <div class="q-text">${q.texto}</div>
         ${q.hint?`<div class="q-hint">ⓘ ${q.hint}</div>`:''}
         <div class="options" id="opts_${q.id}"></div>`;
-      const ow = card.querySelector('#opts_'+q.id);
+      const ow=card.querySelector('#opts_'+q.id);
       q.opciones.forEach((op,idx)=>{
         const btn=document.createElement('div'); btn.className='opt'; btn.textContent=op.label;
         btn.onclick=()=>seleccionar(q.id,idx);
         ow.appendChild(btn);
       });
-      section.appendChild(card);
+      sec.appendChild(card);
     });
-    wrap.appendChild(section);
+    wrap.appendChild(sec);
   });
 }
-
 function seleccionar(qid,idx){
   const wrap=document.getElementById('opts_'+qid);
-  const opts=wrap.querySelectorAll('.opt');
   const q=preguntas.find(q=>q.id===qid);
-  opts.forEach((o,i)=>{
+  wrap.querySelectorAll('.opt').forEach((o,i)=>{
     o.className='opt';
-    if(i===idx){
-      const op=q.opciones[idx];
-      o.className='opt selected risk-'+(op.risk==='block'?'block':op.risk==='high'?'high':op.risk==='med'?'med':'low');
-    }
+    if(i===idx){ const op=q.opciones[idx]; o.className='opt selected risk-'+(op.risk==='block'?'block':op.risk); }
   });
   respuestas[qid]=idx;
   document.getElementById('card_'+qid).classList.add('answered');
   updateProgress();
 }
 function updateProgress(){
-  const done=Object.keys(respuestas).length, total=preguntas.length;
+  const done=Object.keys(respuestas).length,total=preguntas.length;
   document.getElementById('progressFill').style.width=Math.round(done/total*100)+'%';
   document.getElementById('progressLabel').textContent=done+' / '+total;
 }
 
-/* ═══════════════════════════════════════════════
+/* ═══════════════════════════════════
    SCORING ENGINE
-═══════════════════════════════════════════════ */
+═══════════════════════════════════ */
 function computeScore(){
-  let totalPeso=0, maxPeso=0, blockers=[], problemas=[], flags=[];
+  let totalPeso=0,maxPeso=0,blockers=[],problemas=[],flags=[];
   preguntas.forEach(q=>{
-    const ridx=respuestas[q.id];
-    if(ridx===undefined)return;
+    const ridx=respuestas[q.id]; if(ridx===undefined)return;
     const op=q.opciones[ridx];
-    totalPeso+=op.peso;
-    maxPeso+=Math.max(...q.opciones.map(o=>o.peso));
+    totalPeso+=op.peso; maxPeso+=Math.max(...q.opciones.map(o=>o.peso));
     if(op.blocker||op.risk==='block') blockers.push({pregunta:q.texto,respuesta:op.label,flag:op.flag||''});
     else if(op.risk==='high') problemas.push({pregunta:q.texto,respuesta:op.label,flag:op.flag||'',peso:op.peso});
     if(op.flag) flags.push(op.flag);
   });
-  const score = maxPeso>0?Math.round(totalPeso/maxPeso*100):0;
+  const score=maxPeso>0?Math.round(totalPeso/maxPeso*100):0;
   let categoria,colorClass;
   if(blockers.length>0){categoria='BLOQUEADO';colorClass='bloqueado';}
   else if(score<=20){categoria='BAJO';colorClass='verde';}
   else if(score<=45){categoria='MEDIO';colorClass='amarillo';}
   else{categoria='ALTO';colorClass='rojo';}
-  return {score,categoria,colorClass,blockers,problemas,flags};
+  return{score,categoria,colorClass,blockers,problemas,flags};
 }
+
+const TITULOS={BLOQUEADO:'Implantación no viable en configuración estándar',BAJO:'Implantación estándar sin incidencias previstas',MEDIO:'Implantación viable con puntos a verificar',ALTO:'Implantación compleja — requiere gestión activa'};
+const RESUMENES={BLOQUEADO:'Se han detectado condición(es) bloqueante(s) que impiden la comercialización estándar. Es necesario resolver estos requisitos antes de avanzar con la oferta, o derivar a solución técnica personalizada.',BAJO:'El cliente presenta un perfil técnico favorable. La implantación puede realizarse por el proceso estándar sin necesidad de medidas adicionales.',MEDIO:'El proyecto es viable pero hay aspectos técnicos que requieren validación previa para evitar incidencias durante la implantación.',ALTO:'El perfil del cliente presenta múltiples factores de riesgo técnico. Antes de firmar la propuesta es necesario resolver los puntos identificados y alinear expectativas.'};
 
 function buildAcciones(flags){
   const A=[];
   if(flags.includes('acceso_4g')) A.push({t:'Acceso 4G no válido como principal',d:'Informar al cliente que el acceso 4G solo está permitido como backup. Para puestos fijos IP es obligatorio un acceso fijo Orange. Replantear el acceso o limitar la solución a puestos móviles y App CONECTA.'});
   if(flags.includes('acceso_asimetrico')) A.push({t:'Verificar capacidad de upload del acceso',d:'Con FTTH asimétrica el canal de subida limita el número de puestos simultáneos (máx. ~9 puestos con 30M upload). Usar la Matriz de Accesos del Anexo de Validación para confirmar viabilidad.'});
   if(flags.includes('acceso_desconocido')) A.push({t:'Confirmar tipo de acceso antes de ofertar',d:'El acceso es el parámetro crítico de dimensionamiento. Solicitar al cliente la factura o contrato de su acceso de Internet actual.'});
-  if(flags.includes('sin_switch')||flags.includes('switch_sin_verificar')) A.push({t:'Validar o proveer switches VoIP',d:'Sin switches compatibles el proyecto es NO APTO. Incluir switches homologados en la oferta o solicitar al cliente confirmación de compatibilidad (marca y modelo). Completar el Anexo de Validación LAN.'});
-  if(flags.includes('sin_poe')) A.push({t:'Planificar alimentación eléctrica de terminales',d:'Si los switches no tienen PoE, cada puesto necesita una toma de corriente individual. Identificar disponibilidad de tomas eléctricas antes de la instalación.'});
-  if(flags.includes('sin_cableado')||flags.includes('cableado_parcial')) A.push({t:'Resolver el cableado de red antes de la implantación',d:'La instalación no puede realizarse sin cableado estructurado. Incluir instalación de cableado en la oferta (disponible en modo Reventa de Orange) o asegurar que el cliente lo contrata antes del día de instalación.'});
-  if(flags.includes('vlan_personalizada')) A.push({t:'Abrir Bid Review por VLAN personalizada',d:'Una VLAN de telefonía distinta a la VLAN nativa 1 requiere desarrollos adicionales sobre las plantillas de los terminales. Abrir Bid Review con el equipo de preventa para valorar costes y viabilidad técnica.'});
-  if(flags.includes('sin_it')||flags.includes('it_limitado')) A.push({t:'Cubrir el soporte técnico de LAN del cliente',d:'La configuración de switches, VLANs y firewall requiere soporte técnico. Proponer la contratación del servicio de soporte técnico LAN de Orange o identificar una empresa integradora.'});
-  if(flags.includes('firewall_sin_revisar')||flags.includes('firewall_restrictivo')) A.push({t:'Auditoría previa del firewall',d:'Solicitar al IT del cliente que verifique: (1) SIP ALG desactivado, (2) puertos SIP 5060/5061 abiertos, (3) rango RTP UDP desbloqueado. En sectores regulados, escalar a Asesoría Centrex antes de comprometer plazos.'});
-  if(flags.includes('pbx_legacy')||flags.includes('pbx_ip')) A.push({t:'Mapeo de funcionalidades de la PBX actual',d:'Realizar un inventario de las funcionalidades que el cliente usa en su PBX actual y verificar cuáles tienen equivalente en Digital Centrex.'});
-  if(flags.includes('coexistencia_pbx')) A.push({t:'Evaluar escenario de coexistencia PBX + Centrex',d:'La coexistencia con PBX propia requiere SIP Trunk (oferta personalizada). Valorar si el cliente puede realizar una migración progresiva.'});
-  if(flags.includes('fax_no_homologado')) A.push({t:'Solo el ATA Cisco SPA191 está homologado',d:'El cliente no puede usar adaptadores de otros fabricantes. Incluir en la oferta el adaptador homologado Cisco SPA191 por cada línea de fax analógico.'});
-  if(flags.includes('fax_conflicto')) A.push({t:'Conflicto fax analógico + fax virtual',d:'Una misma numeración no puede usarse simultáneamente para fax analógico y fax virtual. El cliente debe elegir una modalidad por número, o usar numeraciones diferentes.'});
-  if(flags.includes('dect_gran_superficie')) A.push({t:'Diseño previo de cobertura DECT',d:'En superficies >50m la cobertura de una base DECT puede ser insuficiente. Realizar un estudio de cobertura y dimensionar el número de bases necesarias (hasta 5 por área).'});
-  if(flags.includes('dect_handover')) A.push({t:'DECT sin handover: bloqueante para movilidad continua',d:'Digital Centrex no soporta handover entre áreas DECT. Si el cliente necesita movilidad entre zonas, valorar soluciones Wi-Fi o puestos móviles.'});
-  if(flags.includes('contact_center')) A.push({t:'Contact Center: derivar a oferta personalizada',d:'La oferta estándar de Digital Centrex no aplica. Derivar al equipo de Preventa de Grandes Empresas para una oferta técnica personalizada.'});
-  if(flags.includes('integracion_critica')||flags.includes('teams_integracion')) A.push({t:'Integraciones con sistemas externos: no disponibles en estándar',d:'Digital Centrex no dispone de integración estándar con CRM, ERP ni Microsoft Teams. Informar al cliente de esta limitación antes de firmar e intentar derivar a solución personalizada.'});
-  if(flags.includes('integracion_deseable')) A.push({t:'Gestionar expectativas sobre integraciones',d:'Anticipar que no habrá integración estándar con sistemas externos y documentar este punto en el acta de preventa.'});
-  if(flags.includes('sip_trunk')) A.push({t:'SIP Trunk: requiere oferta técnica personalizada',d:'La conexión mediante SIP Trunk de centralitas IP propias no está disponible en el estándar. Escalar a Preventa para elaborar una propuesta técnica ad-hoc.'});
-  if(flags.includes('ivr_compleja')) A.push({t:'IVR avanzada fuera del estándar',d:'La IVR solo admite dígitos 0–9, * y #. Sin lógica condicional ni códigos postales. Si el cliente necesita IVR avanzada, valorar una solución de Contact Center o IVR de terceros.'});
-  if(flags.includes('portabilidad_masiva')||flags.includes('numeracion_especial')) A.push({t:'Gestión de portabilidad masiva / numeración especial',d:'Incluir el Anexo de Portabilidad desde el inicio y planificar la implantación con margen adicional de 2–3 semanas.'});
-  if(flags.includes('sedes_extranjero')) A.push({t:'Sedes en el extranjero: solo puestos móviles/app',d:'Los puestos fijos IP solo son contratables en sedes de España. Para sedes internacionales, ofrecer únicamente Puestos Móviles GCU o App CONECTA.'});
-  if(flags.includes('multisede')||flags.includes('gran_multisede')) A.push({t:'Validación LAN por sede',d:'El Anexo de Validación LAN debe completarse por cada sede que incluya terminales fijos IP. Planificar la toma de datos técnicos sede por sede.'});
-  if(flags.includes('plazo_urgente')||flags.includes('plazo_critico')) A.push({t:'Alinear plazos reales con el cliente',d:'El SLA de provisión estándar es de 12 días para puestos fijos y 5 días para móviles. Confirmar con el equipo de Operaciones antes de comprometer plazos menores.'});
-  if(flags.includes('sector_regulado')) A.push({t:'Revisión de seguridad en sectores regulados',d:'Involucrar al equipo de Asesoría Centrex desde preventa para una revisión técnica específica de la red del cliente.'});
+  if(flags.includes('sin_switch')||flags.includes('switch_sin_verificar')) A.push({t:'Validar o proveer switches VoIP',d:'Sin switches compatibles el proyecto es NO APTO. Incluir switches homologados en la oferta o solicitar al cliente confirmación de compatibilidad. Completar el Anexo de Validación LAN.'});
+  if(flags.includes('sin_poe')) A.push({t:'Planificar alimentación eléctrica de terminales',d:'Sin PoE, cada puesto necesita una toma de corriente individual. Identificar disponibilidad de tomas eléctricas antes de la instalación.'});
+  if(flags.includes('sin_cableado')||flags.includes('cableado_parcial')) A.push({t:'Resolver el cableado de red antes de la implantación',d:'La instalación no puede realizarse sin cableado estructurado. Incluir instalación de cableado en la oferta o asegurar que el cliente lo contrata antes del día de instalación.'});
+  if(flags.includes('vlan_personalizada')) A.push({t:'Abrir Bid Review por VLAN personalizada',d:'Una VLAN de telefonía distinta a la VLAN nativa 1 requiere desarrollos adicionales. Abrir Bid Review con el equipo de preventa para valorar costes y viabilidad.'});
+  if(flags.includes('sin_it')||flags.includes('it_limitado')) A.push({t:'Cubrir el soporte técnico de LAN del cliente',d:'Proponer la contratación del servicio de soporte técnico LAN de Orange o identificar una empresa integradora.'});
+  if(flags.includes('firewall_sin_revisar')||flags.includes('firewall_restrictivo')) A.push({t:'Auditoría previa del firewall',d:'Verificar: (1) SIP ALG desactivado, (2) puertos SIP 5060/5061 abiertos, (3) rango RTP UDP desbloqueado. En sectores regulados, escalar a Asesoría Centrex.'});
+  if(flags.includes('pbx_legacy')||flags.includes('pbx_ip')) A.push({t:'Mapeo de funcionalidades de la PBX actual',d:'Inventariar las funcionalidades de la PBX actual y verificar cuáles tienen equivalente en Digital Centrex.'});
+  if(flags.includes('coexistencia_pbx')) A.push({t:'Evaluar escenario de coexistencia PBX + Centrex',d:'La coexistencia con PBX propia requiere SIP Trunk (oferta personalizada). Valorar migración progresiva.'});
+  if(flags.includes('fax_no_homologado')) A.push({t:'Solo el ATA Cisco SPA191 está homologado',d:'Incluir el adaptador homologado Cisco SPA191 en la oferta por cada línea de fax analógico.'});
+  if(flags.includes('fax_conflicto')) A.push({t:'Conflicto fax analógico + fax virtual',d:'Una misma numeración no puede usarse para fax analógico y fax virtual simultáneamente. El cliente debe elegir modalidad por número.'});
+  if(flags.includes('dect_gran_superficie')) A.push({t:'Diseño previo de cobertura DECT',d:'Realizar estudio de cobertura en superficies >50m. Dimensionar el número de bases necesarias (hasta 5 por área).'});
+  if(flags.includes('dect_handover')) A.push({t:'DECT sin handover: bloqueante para movilidad continua',d:'Digital Centrex no soporta handover entre áreas DECT. Valorar soluciones Wi-Fi o puestos móviles.'});
+  if(flags.includes('contact_center')) A.push({t:'Contact Center: derivar a oferta personalizada',d:'Derivar al equipo de Preventa de Grandes Empresas para una oferta técnica personalizada.'});
+  if(flags.includes('integracion_critica')||flags.includes('teams_integracion')) A.push({t:'Integraciones con sistemas externos: no disponibles en estándar',d:'Informar al cliente de esta limitación antes de firmar. Evaluar derivar a solución personalizada.'});
+  if(flags.includes('integracion_deseable')) A.push({t:'Gestionar expectativas sobre integraciones',d:'Documentar en el acta de preventa que no habrá integración estándar con sistemas externos.'});
+  if(flags.includes('sip_trunk')) A.push({t:'SIP Trunk: requiere oferta técnica personalizada',d:'Escalar a Preventa para elaborar una propuesta técnica ad-hoc.'});
+  if(flags.includes('ivr_compleja')) A.push({t:'IVR avanzada fuera del estándar',d:'IVR solo admite dígitos 0–9, * y #. Si el cliente necesita IVR avanzada, valorar solución de Contact Center o IVR de terceros.'});
+  if(flags.includes('portabilidad_masiva')||flags.includes('numeracion_especial')) A.push({t:'Gestión de portabilidad masiva / numeración especial',d:'Incluir el Anexo de Portabilidad desde el inicio y planificar con margen adicional de 2–3 semanas.'});
+  if(flags.includes('sedes_extranjero')) A.push({t:'Sedes en el extranjero: solo puestos móviles/app',d:'Para sedes internacionales, ofrecer únicamente Puestos Móviles GCU o App CONECTA.'});
+  if(flags.includes('multisede')||flags.includes('gran_multisede')) A.push({t:'Validación LAN por sede',d:'El Anexo de Validación LAN debe completarse por cada sede con terminales fijos IP.'});
+  if(flags.includes('plazo_urgente')||flags.includes('plazo_critico')) A.push({t:'Alinear plazos reales con el cliente',d:'SLA estándar: 12 días para puestos fijos y 5 días para móviles. Confirmar con Operaciones antes de comprometer plazos menores.'});
+  if(flags.includes('sector_regulado')) A.push({t:'Revisión de seguridad en sectores regulados',d:'Involucrar al equipo de Asesoría Centrex desde preventa para una revisión técnica específica.'});
   if(flags.includes('migracion_total')) A.push({t:'Migración desde otro operador: planificar portabilidad',d:'Coordinar con el equipo de Portabilidades y gestionar el calendario de migración con el cliente.'});
-  if(flags.includes('decision_lenta')||flags.includes('decision_muy_lenta')) A.push({t:'Gestión del proceso de aprobación del cliente',d:'Solicitar al cliente un contacto técnico y un sponsor ejecutivo para agilizar las validaciones y evitar retrasos en la firma.'});
+  if(flags.includes('decision_lenta')||flags.includes('decision_muy_lenta')) A.push({t:'Gestión del proceso de aprobación del cliente',d:'Solicitar al cliente un contacto técnico y un sponsor ejecutivo para agilizar las validaciones.'});
   return A;
 }
 
-/* ═══════════════════════════════════════════════
-   CALCULAR Y GUARDAR
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════
+   EMAILJS SENDER
+═══════════════════════════════════ */
+function buildEmailParams(entry){
+  const blockersText = entry.blockers&&entry.blockers.length>0
+    ? entry.blockers.map(b=>`⛔ ${b.respuesta}\n   (${b.pregunta})`).join('\n')
+    : 'Ninguna condición bloqueante detectada.';
+
+  const accionesText = entry.acciones&&entry.acciones.length>0
+    ? entry.acciones.map((a,i)=>`${i+1}. ${a.t}\n   ${a.d}`).join('\n\n')
+    : 'Sin acciones adicionales requeridas.';
+
+  const respuestasText = entry.answers
+    ? Object.values(entry.answers).map(a=>`• ${a.pregunta}\n  → ${a.respuesta}`).join('\n\n')
+    : '';
+
+  return {
+    to_email:   entry.toEmail,
+    empresa:    entry.empresa,
+    cif:        entry.cif,
+    fecha:      entry.fecha,
+    score:      entry.categoria==='BLOQUEADO' ? 'BLOQUEADO' : `${entry.score} / 100`,
+    categoria:  entry.categoria,
+    titulo:     entry.titulo,
+    resumen:    entry.resumen,
+    blockers:   blockersText,
+    acciones:   accionesText,
+    respuestas: respuestasText
+  };
+}
+
+async function sendEmail(entry, statusId, btnId){
+  const emailInput = document.getElementById('emailInput_'+statusId);
+  const toEmail = emailInput ? emailInput.value.trim() : entry.toEmail;
+  if(!toEmail||!toEmail.includes('@')){
+    showEmailStatus(statusId,'err','Introduce una dirección de email válida.'); return;
+  }
+  const btn=document.getElementById(btnId);
+  btn.disabled=true;
+  showEmailStatus(statusId,'sending','Enviando informe...');
+  try{
+    await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, buildEmailParams({...entry, toEmail}));
+    showEmailStatus(statusId,'ok','✓ Informe enviado correctamente a '+toEmail);
+  }catch(err){
+    console.error(err);
+    showEmailStatus(statusId,'err','Error al enviar. Verifica la dirección o inténtalo de nuevo.');
+  }finally{
+    btn.disabled=false;
+  }
+}
+
+function showEmailStatus(id,type,msg){
+  const el=document.getElementById('emailStatus_'+id);
+  if(!el)return;
+  el.className='email-status '+type;
+  el.textContent=msg;
+  el.style.display='block';
+}
+
+function emailBoxHTML(statusId, btnLabel){
+  return `<div class="email-box">
+    <h3>Enviar informe por email</h3>
+    <div class="email-row">
+      <input class="email-input" id="emailInput_${statusId}" type="email" placeholder="destinatario@empresa.com">
+      <button class="email-btn" id="emailBtn_${statusId}" onclick="triggerSend('${statusId}')">${btnLabel}</button>
+    </div>
+    <div class="email-status" id="emailStatus_${statusId}"></div>
+  </div>`;
+}
+
+let _pendingEntry = null;
+function triggerSend(statusId){
+  if(_pendingEntry) sendEmail(_pendingEntry, statusId, 'emailBtn_'+statusId);
+}
+
+/* ═══════════════════════════════════
+   CALCULAR
+═══════════════════════════════════ */
 function calcular(){
   const done=Object.keys(respuestas).length;
-  document.getElementById('incompleteMsg').style.display = done<preguntas.length?'block':'none';
-
-  const {score,categoria,colorClass,blockers,problemas,flags} = computeScore();
-  const acciones = buildAcciones(flags);
-
-  const titulosMap = {
-    BLOQUEADO:'Implantación no viable en configuración estándar',
-    BAJO:'Implantación estándar sin incidencias previstas',
-    MEDIO:'Implantación viable con puntos a verificar',
-    ALTO:'Implantación compleja — requiere gestión activa'
-  };
-  const resumenMap = {
-    BLOQUEADO:'Se han detectado condición(es) bloqueante(s) que impiden la comercialización estándar. Es necesario resolver estos requisitos antes de avanzar con la oferta, o derivar a solución técnica personalizada.',
-    BAJO:'El cliente presenta un perfil técnico favorable. La implantación puede realizarse por el proceso estándar sin necesidad de medidas adicionales.',
-    MEDIO:'El proyecto es viable pero hay aspectos técnicos que requieren validación previa para evitar incidencias durante la implantación.',
-    ALTO:'El perfil del cliente presenta múltiples factores de riesgo técnico. Antes de firmar la propuesta es necesario resolver los puntos identificados y alinear expectativas.'
-  };
-
-  // Guardar en storage
-  const answersSnap = {};
-  preguntas.forEach(q=>{
-    const ridx=respuestas[q.id];
-    if(ridx!==undefined) answersSnap[q.id]={pregunta:q.texto,respuesta:q.opciones[ridx].label};
-  });
-
-  const entry = {
-    cif: currentUser.cif,
-    empresa: currentUser.empresa,
-    fecha: new Date().toLocaleDateString('es-ES'),
-    fechaISO: new Date().toISOString(),
-    score, categoria, colorClass,
-    blockers, problemas, flags, acciones,
-    titulo: titulosMap[categoria],
-    resumen: resumenMap[categoria],
-    answers: answersSnap
+  document.getElementById('incompleteMsg').style.display=done<preguntas.length?'block':'none';
+  const {score,categoria,colorClass,blockers,problemas,flags}=computeScore();
+  const acciones=buildAcciones(flags);
+  const answersSnap={};
+  preguntas.forEach(q=>{ const ridx=respuestas[q.id]; if(ridx!==undefined) answersSnap[q.id]={pregunta:q.texto,respuesta:q.opciones[ridx].label}; });
+  const entry={
+    cif:currentUser.cif, empresa:currentUser.empresa,
+    fecha:new Date().toLocaleDateString('es-ES'), fechaISO:new Date().toISOString(),
+    score,categoria,colorClass,blockers,problemas,flags,acciones,
+    titulo:TITULOS[categoria], resumen:RESUMENES[categoria], answers:answersSnap
   };
   saveEntry(entry);
-
-  renderResult(entry);
-
+  _pendingEntry=entry;
+  renderResult(entry, false);
   const r=document.getElementById('result');
   r.style.display='block';
   setTimeout(()=>r.scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
 
-function renderResult(entry, readonly=false){
-  const {score,categoria,colorClass,blockers,problemas,acciones,titulo,resumen} = entry;
-  const resultDiv = document.getElementById('result');
-
-  const scoreDisplay = categoria==='BLOQUEADO'?'✕':score;
+function renderResult(entry, readonly){
+  const {score,categoria,colorClass,blockers,problemas,acciones,titulo,resumen}=entry;
+  const resultDiv=document.getElementById('result');
+  const scoreDisplay=categoria==='BLOQUEADO'?'✕':score;
 
   let blockerHTML='';
   if(blockers.length>0){
-    blockerHTML=`<div class="blockers-box">
-      <h3>⛔ Condiciones Bloqueantes Detectadas (${blockers.length})</h3>
-      <ul>${blockers.map(b=>`<li><span>⛔</span><span><strong>${b.respuesta}</strong><br><small style="color:var(--muted)">${b.pregunta}</small></span></li>`).join('')}</ul>
-    </div>`;
+    blockerHTML=`<div class="blockers-box"><h3>⛔ Condiciones Bloqueantes (${blockers.length})</h3>
+      <ul>${blockers.map(b=>`<li><span>⛔</span><span><strong>${b.respuesta}</strong><br><small style="color:var(--muted)">${b.pregunta}</small></span></li>`).join('')}</ul></div>`;
   }
-
   let problemasHTML='';
   if(categoria!=='BLOQUEADO'&&problemas.length>0){
     const sorted=[...problemas].sort((a,b)=>b.peso-a.peso);
-    const bloques=[...new Set(sorted.map(p=>preguntas.find(q=>q.opciones.some(o=>o.label===p.respuesta))?.bloque).filter(Boolean))];
+    const bqs=[...new Set(sorted.map(p=>preguntas.find(q=>q.opciones.some(o=>o.label===p.respuesta))?.bloque).filter(Boolean))];
     problemasHTML=`<div class="detail-grid">
-      <div class="detail-block"><h3>Factores de Riesgo</h3><ul>
-        ${sorted.slice(0,6).map(p=>`<li><span>⚠</span><span>${p.respuesta}</span></li>`).join('')}
-      </ul></div>
-      <div class="detail-block"><h3>Áreas Afectadas</h3><ul>
-        ${bloques.map(b=>`<li><span>▸</span><span>${b}</span></li>`).join('')}
-      </ul></div>
+      <div class="detail-block"><h3>Factores de Riesgo</h3><ul>${sorted.slice(0,6).map(p=>`<li><span>⚠</span><span>${p.respuesta}</span></li>`).join('')}</ul></div>
+      <div class="detail-block"><h3>Áreas Afectadas</h3><ul>${bqs.map(b=>`<li><span>▸</span><span>${b}</span></li>`).join('')}</ul></div>
     </div>`;
   }
-
   let accionesHTML='';
   if(acciones&&acciones.length>0){
     accionesHTML=`<div class="action-section"><h3>Guía de Actuación</h3>
-      ${acciones.map((a,i)=>`<div class="action-item">
-        <div class="action-num">${i+1}</div>
-        <div class="action-body"><strong>${a.t}</strong><p>${a.d}</p></div>
-      </div>`).join('')}
-    </div>`;
+      ${acciones.map((a,i)=>`<div class="action-item"><div class="action-num">${i+1}</div>
+        <div class="action-body"><strong>${a.t}</strong><p>${a.d}</p></div></div>`).join('')}</div>`;
   }
 
-  const saveMsg = readonly?'':`<div class="save-confirm" id="saveConfirm" style="display:block;">
-    ✓ Informe guardado correctamente para ${entry.empresa} (CIF: ${entry.cif})
-  </div>`;
+  const emailSection = readonly ? '' : emailBoxHTML('client','Enviar informe →');
+  const saveMsg = readonly ? '' : `<div class="save-confirm">✓ Informe guardado correctamente para ${entry.empresa} (CIF: ${entry.cif})</div>`;
+  const restartBtn = readonly ? '' : `<button class="restart-btn" onclick="reiniciar()">↺ Nuevo cuestionario</button>`;
 
-  const restartBtn = readonly?'':`<button class="restart-btn" onclick="reiniciar()">↺ Nuevo cuestionario</button>`;
-
-  resultDiv.innerHTML=`
-    ${saveMsg}
+  resultDiv.innerHTML=`${saveMsg}
     <div class="section-title">Resultado del Scoring</div>
     <div class="result-hero ${colorClass}">
       <div class="result-label">Índice de Dificultad de Implantación</div>
       <div class="result-score">${scoreDisplay}</div>
       ${categoria!=='BLOQUEADO'?`<div class="meter-wrap">
         <div class="meter-track"><div class="meter-fill" style="width:${score}%;background:${score<=20?'var(--green)':score<=45?'var(--yellow)':'var(--red)'}"></div></div>
-        <div class="meter-ticks"><span>Fácil</span><span>Medio</span><span>Complejo</span></div>
-      </div>`:''}
+        <div class="meter-ticks"><span>Fácil</span><span>Medio</span><span>Complejo</span></div></div>`:''}
       <div class="result-label" style="margin-top:14px">Clasificación: ${categoria}</div>
       <div class="result-title">${titulo}</div>
       <div class="result-summary">${resumen}</div>
     </div>
     ${blockerHTML}${problemasHTML}${accionesHTML}
-    ${restartBtn}
-  `;
+    ${emailSection}
+    ${restartBtn}`;
 }
 
 function reiniciar(){
@@ -636,101 +615,72 @@ function reiniciar(){
   document.getElementById('result').style.display='none';
   document.getElementById('incompleteMsg').style.display='none';
   document.getElementById('questionnaire').innerHTML='';
-  updateProgress();
-  renderQ();
+  _pendingEntry=null;
+  updateProgress(); renderQ();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ═══════════════════════════════════════════════
-   ADMIN PANEL
-═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════
+   ADMIN
+═══════════════════════════════════ */
 function renderAdmin(){
   const entries=loadEntries();
-  const total=entries.length;
   const bycat={BAJO:0,MEDIO:0,ALTO:0,BLOQUEADO:0};
   entries.forEach(e=>{ if(bycat[e.categoria]!==undefined) bycat[e.categoria]++; });
-
   document.getElementById('adminStats').innerHTML=`
-    <div class="stat-card"><div class="stat-val">${total}</div><div class="stat-lbl">Total cuestionarios</div></div>
+    <div class="stat-card"><div class="stat-val">${entries.length}</div><div class="stat-lbl">Total cuestionarios</div></div>
     <div class="stat-card"><div class="stat-val" style="color:var(--green)">${bycat.BAJO}</div><div class="stat-lbl">Dificultad Baja</div></div>
     <div class="stat-card"><div class="stat-val" style="color:var(--yellow)">${bycat.MEDIO}</div><div class="stat-lbl">Dificultad Media</div></div>
     <div class="stat-card"><div class="stat-val" style="color:var(--red)">${bycat.ALTO}</div><div class="stat-lbl">Dificultad Alta</div></div>
-    <div class="stat-card"><div class="stat-val" style="color:var(--red-block)">${bycat.BLOQUEADO}</div><div class="stat-lbl">Bloqueados</div></div>
-  `;
+    <div class="stat-card"><div class="stat-val" style="color:var(--red-block)">${bycat.BLOQUEADO}</div><div class="stat-lbl">Bloqueados</div></div>`;
   renderTable();
 }
-
 function renderTable(){
   const entries=loadEntries();
   const q=(document.getElementById('searchBar').value||'').toLowerCase();
-  const filtered=entries.filter(e=>
-    e.cif.toLowerCase().includes(q)||
-    e.empresa.toLowerCase().includes(q)||
-    e.fecha.includes(q)
-  ).sort((a,b)=>new Date(b.fechaISO)-new Date(a.fechaISO));
-
+  const filtered=entries.filter(e=>e.cif.toLowerCase().includes(q)||e.empresa.toLowerCase().includes(q)||e.fecha.includes(q))
+    .sort((a,b)=>new Date(b.fechaISO)-new Date(a.fechaISO));
   const body=document.getElementById('entriesBody');
   const noEnt=document.getElementById('noEntries');
-
-  if(filtered.length===0){
-    body.innerHTML=''; noEnt.style.display='block'; return;
-  }
+  if(filtered.length===0){ body.innerHTML=''; noEnt.style.display='block'; return; }
   noEnt.style.display='none';
-  body.innerHTML=filtered.map(e=>`
-    <tr>
-      <td style="font-weight:500">${e.empresa}</td>
-      <td style="color:var(--muted)">${e.cif}</td>
-      <td style="color:var(--muted)">${e.fecha}</td>
-      <td>${e.categoria!=='BLOQUEADO'?`<span class="score-pill ${e.colorClass}">${e.score}/100</span>`:'<span class="score-pill bloqueado">BLOQUEADO</span>'}</td>
-      <td><span class="score-pill ${e.colorClass}">${e.categoria}</span></td>
-      <td style="text-align:right">
-        <button class="view-btn" onclick="openDetail('${e.cif}')">Ver informe</button>
-        <button class="del-btn" onclick="confirmDelete('${e.cif}','${e.empresa}')">✕</button>
-      </td>
-    </tr>
-  `).join('');
+  body.innerHTML=filtered.map(e=>`<tr>
+    <td style="font-weight:500">${e.empresa}</td>
+    <td style="color:var(--muted)">${e.cif}</td>
+    <td style="color:var(--muted)">${e.fecha}</td>
+    <td>${e.categoria!=='BLOQUEADO'?`<span class="score-pill ${e.colorClass}">${e.score}/100</span>`:'<span class="score-pill bloqueado">BLOQUEADO</span>'}</td>
+    <td><span class="score-pill ${e.colorClass}">${e.categoria}</span></td>
+    <td style="text-align:right">
+      <button class="view-btn" onclick="openDetail('${e.cif}')">Ver informe</button>
+      <button class="del-btn" onclick="confirmDelete('${e.cif}','${e.empresa}')">✕</button>
+    </td></tr>`).join('');
 }
 
 function openDetail(cif){
-  const entry=loadEntries().find(e=>e.cif===cif);
-  if(!entry)return;
-
-  const answersHTML = entry.answers ? `
-    <div style="margin-top:20px">
-      <div class="section-title" style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;display:flex;align-items:center;gap:10px;">
-        Respuestas del cuestionario
-        <span style="flex:1;height:1px;background:var(--border);display:block"></span>
-      </div>
-      <ul class="answers-list">
-        ${Object.values(entry.answers).map(a=>`
-          <li><span class="q">${a.pregunta}</span><span class="a">${a.respuesta}</span></li>
-        `).join('')}
-      </ul>
-    </div>` : '';
+  const entry=loadEntries().find(e=>e.cif===cif); if(!entry)return;
+  _pendingEntry=entry;
+  const statusId='admin_'+cif.replace(/[^a-zA-Z0-9]/g,'');
 
   let blockerHTML='';
   if(entry.blockers&&entry.blockers.length>0){
-    blockerHTML=`<div class="blockers-box" style="margin-top:16px">
-      <h3>⛔ Condiciones Bloqueantes (${entry.blockers.length})</h3>
-      <ul>${entry.blockers.map(b=>`<li><span>⛔</span><span><strong>${b.respuesta}</strong><br><small style="color:var(--muted)">${b.pregunta}</small></span></li>`).join('')}</ul>
-    </div>`;
+    blockerHTML=`<div class="blockers-box" style="margin-top:16px"><h3>⛔ Condiciones Bloqueantes (${entry.blockers.length})</h3>
+      <ul>${entry.blockers.map(b=>`<li><span>⛔</span><span><strong>${b.respuesta}</strong><br><small style="color:var(--muted)">${b.pregunta}</small></span></li>`).join('')}</ul></div>`;
   }
-
   let accionesHTML='';
   if(entry.acciones&&entry.acciones.length>0){
     accionesHTML=`<div class="action-section" style="margin-top:16px">
-      <h3 style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;display:flex;align-items:center;gap:10px;">
-        Guía de actuación
-        <span style="flex:1;height:1px;background:var(--border);display:block"></span>
-      </h3>
-      ${entry.acciones.map((a,i)=>`<div class="action-item">
-        <div class="action-num">${i+1}</div>
-        <div class="action-body"><strong>${a.t}</strong><p>${a.d}</p></div>
-      </div>`).join('')}
-    </div>`;
+      <h3 style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;display:flex;align-items:center;gap:10px;">Guía de actuación<span style="flex:1;height:1px;background:var(--border);display:block"></span></h3>
+      ${entry.acciones.map((a,i)=>`<div class="action-item"><div class="action-num">${i+1}</div>
+        <div class="action-body"><strong>${a.t}</strong><p>${a.d}</p></div></div>`).join('')}</div>`;
   }
+  const answersHTML=entry.answers?`
+    <div style="margin-top:20px">
+      <div style="font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:12px;">Respuestas del cuestionario</div>
+      <ul class="answers-list">${Object.values(entry.answers).map(a=>`<li><span class="q">${a.pregunta}</span><span class="a">${a.respuesta}</span></li>`).join('')}</ul>
+    </div>`:'';
 
-  const scoreDisp = entry.categoria==='BLOQUEADO'?'BLOQUEADO':`${entry.score}/100 — ${entry.categoria}`;
+  const emailSection=emailBoxHTML(statusId,'Enviar informe →');
+  const scoreDisp=entry.categoria==='BLOQUEADO'?'BLOQUEADO':`${entry.score}/100 — ${entry.categoria}`;
 
   document.getElementById('detailContent').innerHTML=`
     <button class="modal-close" onclick="closeModal()">×</button>
@@ -744,27 +694,17 @@ function openDetail(cif){
       <div class="result-title" style="font-size:17px;margin-top:8px">${entry.titulo}</div>
       <div class="result-summary" style="font-size:13px">${entry.resumen}</div>
     </div>
-    ${blockerHTML}
-    ${accionesHTML}
-    ${answersHTML}
-  `;
+    ${blockerHTML}${accionesHTML}${answersHTML}
+    <div style="margin-top:24px">${emailSection}</div>`;
+
   document.getElementById('detailModal').classList.add('open');
 }
 
-function closeModal(){
-  document.getElementById('detailModal').classList.remove('open');
-}
-
+function closeModal(){ document.getElementById('detailModal').classList.remove('open'); }
 function confirmDelete(cif,empresa){
-  if(confirm(`¿Eliminar el cuestionario de ${empresa} (${cif})?`)){
-    deleteEntry(cif);
-    renderAdmin();
-  }
+  if(confirm(`¿Eliminar el cuestionario de ${empresa} (${cif})?`)){ deleteEntry(cif); renderAdmin(); }
 }
-
-document.getElementById('detailModal').addEventListener('click',function(e){
-  if(e.target===this) closeModal();
-});
+document.getElementById('detailModal').addEventListener('click',function(e){ if(e.target===this)closeModal(); });
 </script>
 </body>
 </html>
