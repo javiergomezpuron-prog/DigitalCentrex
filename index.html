@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Digital Centrex · Cualificación de Implantación</title>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
   :root{--orange:#FF6B00;--orange-light:#FF8C33;--orange-dim:rgba(255,107,0,0.10);--dark:#0F0F0F;--mid:#1C1C1E;--surface:#242426;--surface2:#2E2E30;--border:rgba(255,255,255,0.08);--text:#F2F2F2;--muted:#888;--green:#2ECC71;--yellow:#F0C040;--red:#E74C3C;--red-block:#FF2D55;}
@@ -260,7 +260,7 @@
 const EJS_SERVICE  = 'service_gd60vfm';
 const EJS_TEMPLATE = 'template_rhg3zae';
 const EJS_PUBKEY   = 'anV54txlC4gzubTSb';
-emailjs.init('anV54txlC4gzubTSb');
+// emailjs initialized after script loads
 
 /* ═══════════════════════════════════
    APP CONFIG
@@ -706,5 +706,7 @@ function confirmDelete(cif,empresa){
 }
 document.getElementById('detailModal').addEventListener('click',function(e){ if(e.target===this)closeModal(); });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" onload="emailjs.init('anV54txlC4gzubTSb')"></script>
 </body>
 </html>
